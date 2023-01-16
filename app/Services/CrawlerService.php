@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Eloquent\AvgReport;
+use App\Models\Eloquent\Report;
 use App\Models\Repository\ReportRepository;
 use DOMDocument;
 use DOMException;
@@ -30,17 +32,30 @@ class CrawlerService
      */
     public function parsePageByUrl(array $params): void
     {
+        $sumOfLoadTime = 0;
+        $noOfPagesCrawled = 0;
+        $sumOfAllPagesTitle = 0;
+        $sumOfAllPagesTitleCount = 0;
+        $collectAllPagesWords = [];
+
         $response = $this->getHttpClientDetails($params['url']);
         $sumTitle = 0;
         $collectTitleCount = 0;
         if ($response['status'] === 200) {
             $links = $this->pageLinksCrawl($response['html'], $params['url'], $params['pages']);
-            foreach ($links as $link) {
+            foreach ($links as $index => $link) {
                 $anchorLinks = $this->pageLinkCount(base64_decode($link['html']), $link['href']);
                 if (isset($link['pageTitle']) && $link['pageTitle'] != '') {
                     $sumTitle = $sumTitle + strlen($link['pageTitle']);
                     $collectTitleCount++;
                 }
+                // collect avg data
+                $sumOfLoadTime += $link['time'];
+                $noOfPagesCrawled += $index;
+                $sumOfAllPagesTitle += $sumTitle;
+                $sumOfAllPagesTitleCount += $collectTitleCount;
+                $collectAllPagesWords[] = $link['words'];
+                //end
                 $this->reportRepository->saveReport([
                     'page_link' => $link['href'],
                     'status_code' => $link['status_code'],
@@ -52,6 +67,16 @@ class CrawlerService
                     'title_length' => round(($sumTitle / $collectTitleCount), 3),
                 ]);
             }
+            //insert all ave data into table
+            $this->reportRepository->saveAvgReport([
+                'site_link' => $params['url'],
+                'avg_page_load_time' => round(($sumOfLoadTime / $noOfPagesCrawled), 3),
+                'avg_title_length' => round(($sumOfAllPagesTitle / $sumOfAllPagesTitleCount), 3),
+                'avg_world_count' => $this->avgWordCountForAllPages($collectAllPagesWords),
+                'crawled_pages' => $noOfPagesCrawled,
+            ]
+            );
+            //end
         }
     }
 
@@ -258,11 +283,58 @@ class CrawlerService
     }
 
     /**
-     * @param  int  $id
-     * @return string|null
+     * @param  array  $params
+     * @return float
      */
-    public function deleteRecords(int $id)
+    public function avgWordCountForAllPages(array $params): float
+    {
+        $output = [];
+        foreach ($params as $arr) {
+            foreach ($arr as $key => $value) {
+                if (isset($output[$key])) {
+                    $output[$key] += $value;
+                } else {
+                    $output[$key] = $value;
+                }
+            }
+        }
+
+        return round(array_sum(array_values($output)) / count($output), 3);
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function deleteRecords(int $id):void
     {
         $this->reportRepository->destroyReport($id);
     }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    public function deleteAvgRecords(int $id):void
+    {
+        $this->reportRepository->destroyAvgReport($id);
+    }
+
+    /**
+     * @return Report
+     */
+    public function getReports():mixed
+    {
+        return $this->reportRepository->getReports();
+    }
+
+    /**
+     * @return AvgReport
+     */
+    public function getAvgReports():mixed
+    {
+        return $this->reportRepository->getAvgReports();
+    }
+
+
 }

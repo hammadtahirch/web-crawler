@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('avg_reports', function (Blueprint $table) {
             $table->id();
-            $table->string('page_link');
-            $table->integer('status_code');
-            $table->integer('images_links');
-            $table->integer('internal_links');
-            $table->integer('external_links');
-            $table->float('page_load_time');
-            $table->integer('word_count');
-            $table->integer('title_length');
+            $table->string('site_link');
+            $table->float('avg_page_load_time');
+            $table->float('avg_title_length');
+            $table->float('avg_world_count');
+            $table->integer('crawled_pages');
             $table->timestamps();
         });
     }
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('avg_reports');
     }
 };

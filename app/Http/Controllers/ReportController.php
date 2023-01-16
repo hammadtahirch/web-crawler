@@ -29,10 +29,8 @@ class ReportController extends Controller
      */
     public function index(Request $request): View
     {
-        $reportData = Report::latest()->paginate(5);
-
-        return view('index', compact('reportData'))
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+        $reportData = $this->crawlerService->getReports();
+        return view('index', compact('reportData'));
     }
 
     /**
@@ -84,7 +82,6 @@ class ReportController extends Controller
                 ->with('success', 'The selected record has been deleted successfully. Thank you.');
         } catch (\Exception $exception) {
             logger($exception->getMessage());
-
             return redirect()
                 ->route('report.index')
                 ->with('error', 'Well this is embarrassing... something went wrong on our end. Please try again later or contact our support team for assistance.');

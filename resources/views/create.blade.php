@@ -15,21 +15,19 @@
 </div>
 
 @endif
-
-
         <div class="card col-md-5">
-            <div class="card-header">Add Student</div>
+            <div class="card-header">Add site information below</div>
             <div class="card-body">
                 <form method="post" action="{{ route('report.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="row mb-3">
                         <div class="col-sm-10">
-                            <input type="text" name="url" class="form-control" placeholder="Please enter the URL you would like to crawl" />
+                            <input type="text" value="https://agencyanalytics.com" name="url" class="form-control" placeholder="Please enter the URL you would like to crawl" />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-10">
-                            <input type="text" name="pages" class="form-control" placeholder="Please enter the number of pages you would like to crawl." />
+                            <input type="text" value="6" name="pages" class="form-control" placeholder="Please enter the number of pages you would like to crawl." />
                         </div>
                     </div>
                     <div class="text-center">

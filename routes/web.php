@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AvgReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,5 +19,9 @@ Route::resource('/', ReportController::class, ['parameters' => [
     'destroy' => 'id',
 ]]);
 Route::resource('/report', ReportController::class, ['parameters' => [
+    'destroy' => 'id',
+]]);
+
+Route::resource('/avg_report', AvgReportController::class, ['parameters' => [
     'destroy' => 'id',
 ]]);

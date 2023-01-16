@@ -24,6 +24,7 @@
             <div class="col col-md-6"><b>Crawled Data</b></div>
             <div class="col col-md-6">
                 <a href="{{ route('report.create') }}" class="btn btn-success btn-sm float-end">Add</a>
+                <a style="margin-right: 10px;" href="{{ route('avg_report.index') }}" class="btn btn-success btn-sm float-end">AVG Report</a>
             </div>
         </div>
     </div>
@@ -54,7 +55,7 @@
                 <td>{{ $row->external_links }}</td>
                 <td>{{ $row->page_load_time }}</td>
                 <td>{{ $row->word_count }}</td>
-                <td>{{ $row->title_lenght }}</td>
+                <td>{{ $row->title_length }}</td>
                 <td>{{ $row->created_at }}</td>
                 <td>{{ $row->updated_at }}</td>
                 <td>
@@ -75,7 +76,7 @@
             </tr>
             @endif
         </table>
-        {!! $reportData->links() !!}
+        {!! $reportData->links("pagination::bootstrap-5") !!}
 
     </div>
 </div>
