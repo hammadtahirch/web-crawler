@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Eloquent\AvgReport;
 use App\Services\CrawlerService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,17 +22,24 @@ class AvgReportController extends Controller
     }
 
     /**
-     * @param  Request  $request
-     * @return view
+     * use to get all ave report data
+     *
+     * @return View|RedirectResponse
      */
-    public function index(Request $request)
+    public function index():View|RedirectResponse
     {
+        if(!session('email')){
+            $this->crawlerService->deleteDataAndSession();
+            return redirect()->route('report.create');
+        }
         $avgReportData = $this->crawlerService->getAvgReports();
         return view('ava_report', compact('avgReportData'));
     }
 
     /**
-     * @param  int  $id
+     * this function helps to delete avg report using id
+     *
+     * @param  int  $id use for lookup
      * @return RedirectResponse
      */
     public function destroy(int $id): RedirectResponse

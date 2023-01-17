@@ -7,6 +7,7 @@ use App\Models\Eloquent\Report;
 use App\Models\Repository\ReportRepository;
 use DOMDocument;
 use DOMException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
 
 class CrawlerService
@@ -334,6 +335,14 @@ class CrawlerService
     public function getAvgReports():mixed
     {
         return $this->reportRepository->getAvgReports();
+    }
+
+    /**
+     * @return void
+     */
+    public function deleteDataAndSession():void
+    {
+        $this->reportRepository->clearOutDataAndSession();
     }
 
 

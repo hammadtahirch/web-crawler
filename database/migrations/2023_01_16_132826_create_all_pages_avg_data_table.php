@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('avg_reports', function (Blueprint $table) {
             $table->id();
+            $table->string('email');
             $table->string('site_link');
             $table->float('avg_page_load_time');
             $table->float('avg_title_length');

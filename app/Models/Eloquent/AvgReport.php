@@ -16,6 +16,7 @@ class AvgReport extends Model
      * Models fillables and representation of table columns
      */
     protected $fillable = [
+        'email',
         'site_link',
         'avg_page_load_time',
         'avg_title_length',

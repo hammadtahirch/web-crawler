@@ -9,11 +9,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class ReportRepository
 {
     /**
+     * this function helps to save report in db
+     *
      * @param  array  $param
      * @return Report
      */
     public function saveReport(array $param): Report
     {
+        $param['email'] = session('email');
         $reportObject = Report::updateOrCreate(
             [
                 'page_link' => $param['page_link'],
@@ -26,11 +29,14 @@ class ReportRepository
     }
 
     /**
+     * this function helps to save avr report data into db
+     *
      * @param array $param
      * @return AvgReport
      */
     public function saveAvgReport(array $param): AvgReport
     {
+        $param['email'] = session('email');
         $reportObject = AvgReport::updateOrCreate(
             [
                 'site_link' => $param['site_link'],
@@ -43,6 +49,8 @@ class ReportRepository
     }
 
     /**
+     * this function helps to remove report from db.
+     *
      * @param int $id
      * @return void
      */
@@ -52,7 +60,9 @@ class ReportRepository
     }
 
     /**
-     * @param int $id
+     * this function helps to remove ave report data from db
+     *
+     * @param int $id use for lookup.
      * @return void
      */
     public function destroyAvgReport(int $id): void
@@ -61,18 +71,37 @@ class ReportRepository
     }
 
     /**
+     * this function helps to get report from db
+     *
      * @return LengthAwarePaginator
      */
     public function getReports(): mixed
     {
-        return Report::latest()->paginate(10);
+        return Report::latest()
+            ->where(['email'=>session('email')])
+            ->paginate(10);
     }
 
     /**
+     * this function helps to get avg report data.
+     *
      * @return LengthAwarePaginator
      */
     public function getAvgReports(): mixed
     {
-        return AvgReport::latest()->paginate(10);
+        return AvgReport::latest()
+            ->where(['email'=>session('email')])
+            ->paginate(10);
+    }
+
+    /**
+     * this function remove all the report and avg report data and session.
+     *
+     * @return void
+     */
+    public function clearOutDataAndSession(){
+        Report::where(['email'=>session('email')])->delete();
+        AvgReport::where(['email'=>session('email')])->delete();
+        session()->forget('email');
     }
 }

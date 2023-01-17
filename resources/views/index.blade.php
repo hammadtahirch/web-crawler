@@ -11,11 +11,9 @@
 @endif
 
 @if($message = Session::get('error'))
-
     <div class="alert alert-danger">
         {{ $message }}
     </div>
-
 @endif
 
 <div class="card">
@@ -25,6 +23,7 @@
             <div class="col col-md-6">
                 <a href="{{ route('report.create') }}" class="btn btn-success btn-sm float-end">Add</a>
                 <a style="margin-right: 10px;" href="{{ route('avg_report.index') }}" class="btn btn-success btn-sm float-end">AVG Report</a>
+                <a style="margin-right: 10px;" href="<?=url('')?>/delete_session_data" class="btn btn-success btn-sm float-end">Clear Out</a>
             </div>
         </div>
     </div>
@@ -56,8 +55,8 @@
                 <td>{{ $row->page_load_time }}</td>
                 <td>{{ $row->word_count }}</td>
                 <td>{{ $row->title_length }}</td>
-                <td>{{ $row->created_at }}</td>
-                <td>{{ $row->updated_at }}</td>
+                <td>{{ date("F d, Y h:i:s", strtotime($row->created_at)) }}</td>
+                <td>{{ date("F d, Y h:i:s", strtotime($row->updated_at)) }}</td>
                 <td>
                     <form method="post" action="{{ route('report.destroy', $row->id) }}">
                         @csrf
@@ -77,7 +76,6 @@
             @endif
         </table>
         {!! $reportData->links("pagination::bootstrap-5") !!}
-
     </div>
 </div>
 

@@ -49,8 +49,8 @@
                 <td>{{ $row->avg_title_length }}</td>
                 <td>{{ $row->avg_world_count }}</td>
                 <td>{{ $row->crawled_pages }}</td>
-                <td>{{ $row->created_at }}</td>
-                <td>{{ $row->updated_at }}</td>
+                <td>{{ date("F d, Y h:i:s", strtotime($row->created_at)) }}</td>
+                <td>{{ date("F d, Y h:i:s", strtotime($row->updated_at)) }}</td>
                 <td>
                     <form method="post" action="{{ route('avg_report.destroy', $row->id) }}">
                         @csrf

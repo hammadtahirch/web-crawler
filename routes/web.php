@@ -15,13 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('/', ReportController::class, ['parameters' => [
-    'destroy' => 'id',
-]]);
+Route::get('/', [ReportController::class,'create']);
+
+Route::get('/delete_session_data', [ReportController::class,'deleteDataAndSession']);
+
 Route::resource('/report', ReportController::class, ['parameters' => [
     'destroy' => 'id',
 ]]);
-
 Route::resource('/avg_report', AvgReportController::class, ['parameters' => [
     'destroy' => 'id',
 ]]);

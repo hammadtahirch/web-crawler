@@ -16,6 +16,7 @@ class Report extends Model
      * Models fillables and representation of table columns
      */
     protected $fillable = [
+        'email',
         'page_link',
         'status_code',
         'images_links',
