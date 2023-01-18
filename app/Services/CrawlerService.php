@@ -26,6 +26,8 @@ class CrawlerService
     }
 
     /**
+     * this services help to crawl pages and save in into db
+     *
      * @param  array  $params
      * @return void
      *
@@ -69,6 +71,7 @@ class CrawlerService
                 ]);
             }
             //insert all ave data into table
+            //avg data is not 100% accurate. there is always room to improve it.
             $this->reportRepository->saveAvgReport([
                 'site_link' => $params['url'],
                 'avg_page_load_time' => round(($sumOfLoadTime / $noOfPagesCrawled), 3),
@@ -82,6 +85,9 @@ class CrawlerService
     }
 
     /**
+     * this function helps to find all possible works on single page
+     * and count it.
+     *
      * @param $html
      * @return array
      */
@@ -101,7 +107,9 @@ class CrawlerService
     }
 
     /**
-     * @param  string  $url
+     * This function help to parse web urls and get html response
+     *
+     * @param  string  $url {url} is using for look up
      * @return array
      */
     public function getHttpClientDetails(string $url): array
@@ -161,6 +169,8 @@ class CrawlerService
                     }
 
                     $response = $this->getHttpClientDetails($linkHref);
+
+                    //this portion is not  100% correct always room to improve it.
                     $words = $this->pageWordCount($response['html']);
                     $totalWords = 0;
                     foreach ($words as $key => $word) {
@@ -190,6 +200,7 @@ class CrawlerService
 
     /**
      * Helps to search system internal and external links
+     * remove duplicates
      *
      * @param $html
      * @param $startURL
@@ -258,14 +269,13 @@ class CrawlerService
         if ($list->length > 0) {
             return trim(preg_replace("/\s+/", ' ', $list->item(0)->textContent));
         }
-
         return false;
     }
 
     /**
      * Helps to search image in html
      *
-     * @param $html
+     * @param $html {html} is using to extract images links
      * @return array
      */
     public function getPageImages($html): array
@@ -284,7 +294,9 @@ class CrawlerService
     }
 
     /**
-     * @param  array  $params
+     * this function helps to count all pages world to make avg page data.
+     *
+     * @param  array  $params {params} is using for lookup
      * @return float
      */
     public function avgWordCountForAllPages(array $params): float
@@ -304,7 +316,9 @@ class CrawlerService
     }
 
     /**
-     * @param int $id
+     * Helps to remove records form report table.
+     *
+     * @param int $id {id} is using for lookup.
      * @return void
      */
     public function deleteRecords(int $id):void
@@ -313,6 +327,8 @@ class CrawlerService
     }
 
     /**
+     * Helps to remove records form avg report table.
+     *
      * @param int $id
      * @return void
      */
@@ -322,6 +338,8 @@ class CrawlerService
     }
 
     /**
+     * Helps to get report data from table.
+     *
      * @return Report
      */
     public function getReports():mixed
@@ -330,6 +348,8 @@ class CrawlerService
     }
 
     /**
+     * Helps to get avg report data from table.
+     *
      * @return AvgReport
      */
     public function getAvgReports():mixed
@@ -338,6 +358,8 @@ class CrawlerService
     }
 
     /**
+     * Helps to remove report and avg report data and clear user session.
+     *
      * @return void
      */
     public function deleteDataAndSession():void
