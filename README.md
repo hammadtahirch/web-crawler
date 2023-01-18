@@ -1,11 +1,5 @@
 # What is this?
-Hey guys! I just received a challenge from Agency Analytics.
-This is my solution! In order to get this challenge going, I created a docker box.
-Been using it for a while and really like it's simplicity.
-For this challenge, I decided to create a bootstrap frontend website where the user can submit a URL and a number of pages to crawl.
-the request and save data into db.
-I am using a Laravel 9 framework for this project on a PHP 8+ nginx server.
-Please refer yourself to this readme for a full explanation on how it works.
+I recently received a challenge from Agency Analytics and have created a solution. To start the challenge, I utilized a Docker container for its simplicity. For this specific challenge, I built a Bootstrap frontend website where the user can submit a URL and specify the number of pages to crawl. The website will then process the request and store the data in a database. I am using the Laravel 9 framework and a PHP 8+ nginx server for this project. For a detailed explanation on how the solution works, please refer to the accompanying readme file.
 
 ## About This challenge
 
@@ -68,3 +62,13 @@ You should now have access to http://localhost:2000
 - Created a nice readme file
 - Explained how to reproduce the solution and how it works
 
+## There are areas in the project that could be improved.
+
+
+- It is not a good idea to use page crawling for more than 10,20 pages. Instead, it is better to use the crawlerServicer wrapped in a Laravel queue. Break the pages into small chunks, such as 2 or 3 pages per queue call.
+- The average data is not entirely accurate and may require additional review to improve its precision.
+- I chose to use database session for this project as it was relatively small, and I do not have confidence in file sessions. It would have been more suitable to utilize Redis for session management.
+- The database structure could be improved by using a properly normalized table structure.
+- The code quality can also be improved by implementing unit testing.
+
+## I always consider myself a student, and I welcome constructive criticism, suggestions, and feedback.
