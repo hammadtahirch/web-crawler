@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y \
     git \
     curl\
     libonig-dev\
-    libzip-dev
+    libzip-dev\
+    sqlite3
 
 # Install extensions
 RUN docker-php-ext-install pdo_mysql
@@ -27,6 +28,7 @@ RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install exif
 RUN docker-php-ext-install pcntl
+
 
 RUN apt-get update && apt-get install -y \
     libfreetype6-dev \

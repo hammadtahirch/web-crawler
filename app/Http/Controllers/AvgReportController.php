@@ -18,7 +18,7 @@ class AvgReportController extends Controller
     /**
      * Constructor to create a new instance of the class and inject an instance of `CrawlerService`.
      *
-     * @param CrawlerService $crawlerService Injected instance of the `CrawlerService` class.
+     * @param  CrawlerService  $crawlerService Injected instance of the `CrawlerService` class.
      */
     public function __construct(CrawlerService $crawlerService)
     {
@@ -33,8 +33,9 @@ class AvgReportController extends Controller
      */
     public function index(): View|RedirectResponse
     {
-        if (!session('email')) {
+        if (! session('email')) {
             $this->crawlerService->deleteDataAndSession();
+
             return redirect()->route('report.create');
         }
         $avgReportData = $this->crawlerService->getAvgReports();
@@ -52,6 +53,7 @@ class AvgReportController extends Controller
     {
         try {
             $this->crawlerService->deleteAvgRecords($id);
+
             return redirect()
                 ->route('avg_report.index')
                 ->with('success', 'The selected record has been deleted successfully. Thank you.');

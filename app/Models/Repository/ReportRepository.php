@@ -11,7 +11,7 @@ class ReportRepository
     /**
      * this function helps to save report in db
      *
-     * @param array $param contains the report data to be saved
+     * @param  array  $param contains the report data to be saved
      * @return Report
      */
     public function saveReport(array $param): Report
@@ -31,7 +31,7 @@ class ReportRepository
     /**
      * Save average report data to database
      *
-     * @param array $param contains the avg report data to be saved
+     * @param  array  $param contains the avg report data to be saved
      * @return AvgReport
      */
     public function saveAvgReport(array $param): AvgReport

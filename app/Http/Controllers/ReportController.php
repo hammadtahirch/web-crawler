@@ -20,7 +20,7 @@ class ReportController extends Controller
     /**
      * Constructor to initialize the `CrawlerService`.
      *
-     * @param CrawlerService $crawlerService
+     * @param  CrawlerService  $crawlerService
      */
     public function __construct(CrawlerService $crawlerService)
     {
@@ -37,6 +37,7 @@ class ReportController extends Controller
     {
         if (! session('email')) {
             $this->crawlerService->deleteDataAndSession();
+
             return redirect()->route('report.create');
         }
         $reportData = $this->crawlerService->getReports();

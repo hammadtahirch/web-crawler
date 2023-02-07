@@ -21,7 +21,7 @@ class CrawlerService
     /**
      * Constructor to initialize the `ReportRepository`.
      *
-     * @param ReportRepository $reportRepository
+     * @param  ReportRepository  $reportRepository
      */
     public function __construct(ReportRepository $reportRepository)
     {
@@ -31,7 +31,7 @@ class CrawlerService
     /**
      * This function helps to parse the page data by the given URL.
      *
-     * @param array $params The parameters contains the URL to be parsed and number of pages to be crawled
+     * @param  array  $params The parameters contains the URL to be parsed and number of pages to be crawled
      * @return void
      *
      * @throws DOMException
@@ -90,7 +90,7 @@ class CrawlerService
     /**
      * This function counts the number of words in the given HTML content.
      *
-     * @param string $html The HTML content.
+     * @param  string  $html The HTML content.
      * @return array An array containing the word counts.
      */
     public function pageWordCount(string $html): array
@@ -112,7 +112,7 @@ class CrawlerService
      * Retrieve HTTP Client Details
      * This function retrieves details of the HTTP client including load time, HTTP status and HTML body of the response.
      *
-     * @param string $url URL to retrieve details from
+     * @param  string  $url URL to retrieve details from
      * @return array Details of the HTTP client response
      */
     public function getHttpClientDetails(string $url): array
@@ -132,9 +132,9 @@ class CrawlerService
     /**
      * Used to crawl a given starting URL and return information about the links found on that page.
      *
-     * @param string $html - HTML code of the page to be crawled.
-     * @param string $startURL - URL of the page to start crawling.
-     * @param int $pages - Maximum number of pages to crawl.
+     * @param  string  $html - HTML code of the page to be crawled.
+     * @param  string  $startURL - URL of the page to start crawling.
+     * @param  int  $pages - Maximum number of pages to crawl.
      * @return array - An array of information about the links found on the page.
      *
      * @throws DOMException
@@ -204,8 +204,8 @@ class CrawlerService
     /**
      * Helps to search system internal and external links and remove duplicates
      *
-     * @param string $html      The HTML code to extract links from.
-     * @param string $startURL  The starting URL used to fix and identify internal and external links.
+     * @param  string  $html      The HTML code to extract links from.
+     * @param  string  $startURL  The starting URL used to fix and identify internal and external links.
      * @return array An array of internal and external links found in the HTML.
      */
     public function pageLinkCount(string $html, string $startURL): array
@@ -260,7 +260,7 @@ class CrawlerService
     /**
      * Helps to search title tag from html content
      *
-     * @param string $html The html content of the page
+     * @param  string  $html The html content of the page
      * @return bool|string The title of the page if it exists, false otherwise.
      */
     public function getPageTitle(string $html): bool|string
@@ -278,7 +278,7 @@ class CrawlerService
     /**
      * Search image from html content and return array of images.
      *
-     * @param string $html The HTML content as a string
+     * @param  string  $html The HTML content as a string
      * @return array An array of image sources (URLs)
      */
     public function getPageImages($html): array
@@ -299,7 +299,7 @@ class CrawlerService
     /**
      * Calculate the average word count for all pages
      *
-     * @param array $params An array of arrays, each containing the word count of a page
+     * @param  array  $params An array of arrays, each containing the word count of a page
      * @return float The average word count of all pages
      */
     public function avgWordCountForAllPages(array $params): float
@@ -321,7 +321,7 @@ class CrawlerService
     /**
      * Deletes the specified report record.
      *
-     * @param int $id The id of the report to delete
+     * @param  int  $id The id of the report to delete
      * @return void
      */
     public function deleteRecords(int $id): void
@@ -332,7 +332,7 @@ class CrawlerService
     /**
      * Deletes the specified avg report record.
      *
-     * @param int $id The id of the avg report to delete
+     * @param  int  $id The id of the avg report to delete
      * @return void
      */
     public function deleteAvgRecords(int $id): void
