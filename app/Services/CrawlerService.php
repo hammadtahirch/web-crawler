@@ -7,18 +7,21 @@ use App\Models\Eloquent\Report;
 use App\Models\Repository\ReportRepository;
 use DOMDocument;
 use DOMException;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
 
 class CrawlerService
 {
     /**
+     * Private property to store an instance of the `ReportRepository` class
+     *
      * @var ReportRepository
      */
     private ReportRepository $reportRepository;
 
     /**
-     * class constructor
+     * Constructor to initialize the `ReportRepository`.
+     *
+     * @param ReportRepository $reportRepository
      */
     public function __construct(ReportRepository $reportRepository)
     {
@@ -26,9 +29,9 @@ class CrawlerService
     }
 
     /**
-     * this services help to crawl pages and save in into db
+     * This function helps to parse the page data by the given URL.
      *
-     * @param  array  $params
+     * @param array $params The parameters contains the URL to be parsed and number of pages to be crawled
      * @return void
      *
      * @throws DOMException
@@ -85,13 +88,12 @@ class CrawlerService
     }
 
     /**
-     * this function helps to find all possible works on single page
-     * and count it.
+     * This function counts the number of words in the given HTML content.
      *
-     * @param $html
-     * @return array
+     * @param string $html The HTML content.
+     * @return array An array containing the word counts.
      */
-    public function pageWordCount($html): array
+    public function pageWordCount(string $html): array
     {
         // Get rid of style, script etc
         $search = [
@@ -107,10 +109,11 @@ class CrawlerService
     }
 
     /**
-     * This function help to parse web urls and get html response
+     * Retrieve HTTP Client Details
+     * This function retrieves details of the HTTP client including load time, HTTP status and HTML body of the response.
      *
-     * @param  string  $url {url} is using for look up
-     * @return array
+     * @param string $url URL to retrieve details from
+     * @return array Details of the HTTP client response
      */
     public function getHttpClientDetails(string $url): array
     {
@@ -127,16 +130,16 @@ class CrawlerService
     }
 
     /**
-     * Search links in HTML and crawl them up to given number of pages
+     * Used to crawl a given starting URL and return information about the links found on that page.
      *
-     * @param $html
-     * @param $startURL
-     * @param $pages
-     * @return array
+     * @param string $html - HTML code of the page to be crawled.
+     * @param string $startURL - URL of the page to start crawling.
+     * @param int $pages - Maximum number of pages to crawl.
+     * @return array - An array of information about the links found on the page.
      *
      * @throws DOMException
      */
-    public function pageLinksCrawl($html, $startURL, $pages): array
+    public function pageLinksCrawl(string $html, string $startURL, int $pages): array
     {
         $parseStart = parse_url($startURL);
         $baseStart = $parseStart['scheme'].'://'.$parseStart['host'];
@@ -199,14 +202,13 @@ class CrawlerService
     }
 
     /**
-     * Helps to search system internal and external links
-     * remove duplicates
+     * Helps to search system internal and external links and remove duplicates
      *
-     * @param $html
-     * @param $startURL
-     * @return array
+     * @param string $html      The HTML code to extract links from.
+     * @param string $startURL  The starting URL used to fix and identify internal and external links.
+     * @return array An array of internal and external links found in the HTML.
      */
-    public function pageLinkCount($html, $startURL): array
+    public function pageLinkCount(string $html, string $startURL): array
     {
         // Retreive info on the start URL to fix links we retreive
         $parseStart = parse_url($startURL);
@@ -256,12 +258,12 @@ class CrawlerService
     }
 
     /**
-     * Helps to search title tag from html
+     * Helps to search title tag from html content
      *
-     * @param $html
-     * @return false|string
+     * @param string $html The html content of the page
+     * @return bool|string The title of the page if it exists, false otherwise.
      */
-    public function getPageTitle($html): bool|string
+    public function getPageTitle(string $html): bool|string
     {
         $htmlDom = new DOMDocument;
         @$htmlDom->loadHTML($html);
@@ -269,14 +271,15 @@ class CrawlerService
         if ($list->length > 0) {
             return trim(preg_replace("/\s+/", ' ', $list->item(0)->textContent));
         }
+
         return false;
     }
 
     /**
-     * Helps to search image in html
+     * Search image from html content and return array of images.
      *
-     * @param $html {html} is using to extract images links
-     * @return array
+     * @param string $html The HTML content as a string
+     * @return array An array of image sources (URLs)
      */
     public function getPageImages($html): array
     {
@@ -294,10 +297,10 @@ class CrawlerService
     }
 
     /**
-     * this function helps to count all pages world to make avg page data.
+     * Calculate the average word count for all pages
      *
-     * @param  array  $params {params} is using for lookup
-     * @return float
+     * @param array $params An array of arrays, each containing the word count of a page
+     * @return float The average word count of all pages
      */
     public function avgWordCountForAllPages(array $params): float
     {
@@ -316,56 +319,54 @@ class CrawlerService
     }
 
     /**
-     * Helps to remove records form report table.
+     * Deletes the specified report record.
      *
-     * @param int $id {id} is using for lookup.
+     * @param int $id The id of the report to delete
      * @return void
      */
-    public function deleteRecords(int $id):void
+    public function deleteRecords(int $id): void
     {
         $this->reportRepository->destroyReport($id);
     }
 
     /**
-     * Helps to remove records form avg report table.
+     * Deletes the specified avg report record.
      *
-     * @param int $id
+     * @param int $id The id of the avg report to delete
      * @return void
      */
-    public function deleteAvgRecords(int $id):void
+    public function deleteAvgRecords(int $id): void
     {
         $this->reportRepository->destroyAvgReport($id);
     }
 
     /**
-     * Helps to get report data from table.
+     * Gets report data from report table.
      *
      * @return Report
      */
-    public function getReports():mixed
+    public function getReports(): mixed
     {
         return $this->reportRepository->getReports();
     }
 
     /**
-     * Helps to get avg report data from table.
+     * Gets avg report data from table.
      *
      * @return AvgReport
      */
-    public function getAvgReports():mixed
+    public function getAvgReports(): mixed
     {
         return $this->reportRepository->getAvgReports();
     }
 
     /**
-     * Helps to remove report and avg report data and clear user session.
+     * Removes report and avg report data and clear user session.
      *
      * @return void
      */
-    public function deleteDataAndSession():void
+    public function deleteDataAndSession(): void
     {
         $this->reportRepository->clearOutDataAndSession();
     }
-
-
 }

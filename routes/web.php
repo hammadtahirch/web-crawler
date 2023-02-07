@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AvgReportController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ReportController::class,'create']);
+Route::get('/', [ReportController::class, 'create']);
 
-Route::get('/delete_session_data', [ReportController::class,'deleteDataAndSession']);
+Route::get('/delete_session_data', [ReportController::class, 'deleteDataAndSession']);
 
 Route::resource('/report', ReportController::class, ['parameters' => [
     'destroy' => 'id',

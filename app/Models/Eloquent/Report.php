@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     /**
-     * trait
+     * This trait allows the model to use the built-in factory to create new instances.
      */
     use HasFactory;
 
